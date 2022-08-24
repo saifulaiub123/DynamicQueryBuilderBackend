@@ -1,0 +1,23 @@
+{
+  "tableName": "Supplier",
+  "columns": [
+    "string"
+  ],
+  "joinTables": [
+    {
+      "tableName": "Payer",
+      "parentTableName": "Supplier",
+      "parentColumnOn": "Id",
+      "currentColumnOn": "SupplierId"
+    }
+  ],
+  "whereConditions": [
+    {
+      "condition": ">",
+      "conditionTable": "Payer",
+      "conditionColumn": "Quantity",
+      "value": "10",
+      "valueType": "int"
+    }
+  ]
+}
