@@ -25,6 +25,10 @@ namespace Involys.Poc.Api.services.DynamicLinq
         {
             try
             {
+                
+
+
+
                 var selectedColumn = GetSelectedColumList(model);
                 StringBuilder sb = new StringBuilder($"select {selectedColumn} from [{model.TableName}] ");
                 if (model.JoinTables.Count > 0)
@@ -41,16 +45,25 @@ namespace Involys.Poc.Api.services.DynamicLinq
                     sb.Append("where ");
                     foreach (var wc in model.WhereConditions)
                     {
-                        
-                        if(wc.ValueType == "string")
+                        string fullyQualifiedName = $"Common.Model.{wc.ConditionTable}, Common, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null";
+
+                        Type type = Type.GetType(fullyQualifiedName);
+
+                        var prop = type.GetProperty(wc.ConditionColumn);
+
+                        if (prop.PropertyType == typeof(int))
                         {
-                            sb.Append("[" + wc.ConditionTable + "]." + wc.ConditionColumn + " " + wc.Condition + " '" + wc.Value +"'");
+                            sb.Append("[" + wc.ConditionTable + "]." + wc.ConditionColumn + " " + wc.Condition + " " + Convert.ToInt32(wc.Value));   
                         }
-                        else if (wc.ValueType == "int")
+                        else if (prop.PropertyType == typeof(string))
+                        {
+                            sb.Append("[" + wc.ConditionTable + "]." + wc.ConditionColumn + " " + wc.Condition + " '" + wc.Value + "'");
+                        }
+                        else if (prop.PropertyType == typeof(bool))
                         {
                             sb.Append("[" + wc.ConditionTable + "]." + wc.ConditionColumn + " " + wc.Condition + " " + Convert.ToInt32(wc.Value));
                         }
-                        
+
                         count++;
                         if (count < model.WhereConditions.Count)
                         {
