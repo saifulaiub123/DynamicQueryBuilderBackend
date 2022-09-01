@@ -143,6 +143,19 @@ namespace Involys.Poc.Api.Services.Tables
 
 
         }
+        public async Task<IEnumerable<TableFieldResponse>> GetTableFieldsByTableName(string name)
+        {
+            _logger.LogInformation("Get All table fields service  call!");
+            TableDataModel table = new TableDataModel();
+            List<TableFieldDataModel> tableFields = new List<TableFieldDataModel>();
+            var tableObj = await _context.Tables.Where(x => x.Name == name).FirstOrDefaultAsync();
+            if(tableObj != null)
+            {
+                table.Id = tableObj.Id;
+                tableFields = await _context.TableFields.Where(e => e.Table == table).Include(t => t.Table).ToListAsync();
+            }
+            return _mapper.Map<List<TableFieldResponse>>(tableFields).HideSensitiveProperties();
+        }
 
         public async Task<TableFieldResponse> GetTableField(int id)
         {

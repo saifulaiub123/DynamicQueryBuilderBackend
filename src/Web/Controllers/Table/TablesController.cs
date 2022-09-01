@@ -35,6 +35,11 @@ namespace Involys.Poc.Api.Controllers.Table
         {
             return Ok(await _tableService.GetTableFields(id));
         }
+        [HttpGet("TableFieldByTableName/{name}")]
+        public virtual async Task<ActionResult<IEnumerable<TableFieldResponse>>> TableFieldByTableName(string name)
+        {
+            return Ok(await _tableService.GetTableFieldsByTableName(name));
+        }
 
         // GET: api/<TablesController>
         [HttpGet("TableField/Primary/{id}")]

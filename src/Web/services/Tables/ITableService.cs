@@ -14,6 +14,7 @@ namespace Involys.Poc.Api.Services.Tables
 
         Task<IEnumerable<TableResponse>> GetAllTables();
         Task<IEnumerable<TableFieldResponse>> GetTableFields(int idTable);
+        Task<IEnumerable<TableFieldResponse>> GetTableFieldsByTableName(string name);
         Task<IEnumerable<TableFieldResponse>> GetTablePrimaryKeyFields(int idTable);
         Task<IEnumerable<TableFieldResponse>> GetTableForeignKeyFields(int idTable);
         Task<TableResponse> GetTable(int id);

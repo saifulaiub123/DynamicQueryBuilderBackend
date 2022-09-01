@@ -8,6 +8,6 @@ namespace Common.Model
     {
         public int Id { get; set; }
         public int Quantity { get; set; }
-        public int SupplierId { get; set; }
+        public int Supplier { get; set; }
     }
 }

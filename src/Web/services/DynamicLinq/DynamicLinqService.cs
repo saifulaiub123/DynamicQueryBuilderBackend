@@ -35,7 +35,7 @@ namespace Involys.Poc.Api.services.DynamicLinq
                 {
                     foreach (var jt in model.JoinTables)
                     {
-                        sb.Append("join [" + jt.TableName + "] on [" + jt.ParentTableName + "]." + jt.ParentColumnOn + "= [" + jt.TableName + "]." + jt.CurrentColumnOn + " ");
+                        sb.Append("join [" + jt.TableName + "] on [" + jt.ParentTableName + "].[" + jt.ParentColumnOn + "] = [" + jt.TableName + "].[" + jt.CurrentColumnOn + "] ");
                     }
                 }
                 if (model.WhereConditions.Count > 0)
@@ -53,15 +53,15 @@ namespace Involys.Poc.Api.services.DynamicLinq
 
                         if (prop.PropertyType == typeof(int))
                         {
-                            sb.Append("[" + wc.ConditionTable + "]." + wc.ConditionColumn + " " + wc.Condition + " " + Convert.ToInt32(wc.Value));   
+                            sb.Append("[" + wc.ConditionTable + "].[" + wc.ConditionColumn + "] " + wc.Condition + " " + Convert.ToInt32(wc.Value));   
                         }
                         else if (prop.PropertyType == typeof(string))
                         {
-                            sb.Append("[" + wc.ConditionTable + "]." + wc.ConditionColumn + " " + wc.Condition + " '" + wc.Value + "'");
+                            sb.Append("[" + wc.ConditionTable + "].[" + wc.ConditionColumn + "] " + wc.Condition + " '" + wc.Value + "'");
                         }
                         else if (prop.PropertyType == typeof(bool))
                         {
-                            sb.Append("[" + wc.ConditionTable + "]." + wc.ConditionColumn + " " + wc.Condition + " " + Convert.ToInt32(wc.Value));
+                            sb.Append("[" + wc.ConditionTable + "].[" + wc.ConditionColumn + "] " + wc.Condition + " " + Convert.ToInt32(wc.Value));
                         }
 
                         count++;
@@ -95,7 +95,7 @@ namespace Involys.Poc.Api.services.DynamicLinq
             {
                 foreach(var col in model.Columns)
                 {
-                    columns += $"[{model.TableName}].[{col}],";
+                    columns += $"[{model.TableName}].[{col}] as {model.TableName}_{col},";
                 }
             }
 
@@ -105,7 +105,7 @@ namespace Involys.Poc.Api.services.DynamicLinq
                 {
                     foreach (var col in joinTable.Columns)
                     {
-                        columns += $"[{joinTable.TableName}].[{col}],";
+                        columns += $"[{joinTable.TableName}].[{col}]  as {joinTable.TableName}_{col},";
                     }
                 }
             }
